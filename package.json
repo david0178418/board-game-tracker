@@ -4,14 +4,33 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:inspect": "NODE_OPTIONS='--inspect' next dev",
+    "dev:db": "docker-compose up",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix"
   },
   "dependencies": {
-    "next": "13.0.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@fontsource/roboto": "^4.5.8",
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.10.11",
+    "@types/bcryptjs": "^2.4.2",
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "@typescript-eslint/parser": "^5.41.0",
+    "bcryptjs": "^2.4.3",
+    "date-fns": "^2.29.3",
+    "jotai": "^1.9.0",
+    "mongodb": "^4.11.0",
+    "next": "^12.3.1",
+    "next-auth": "^4.15.0",
+    "next-seo": "^5.11.0",
+    "react": "^18.2.0",
+    "react-dom": "18.2.0",
+    "ts-key-enum": "^2.0.12",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "@types/node": "18.11.7",

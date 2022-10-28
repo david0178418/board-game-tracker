@@ -18,6 +18,8 @@
 # misc
 .DS_Store
 *.pem
+*.mongodb
+/mongodb/
 
 # debug
 npm-debug.log*
@@ -26,11 +28,12 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
-.env*.local
+*.local*
+
+/data/
 
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
