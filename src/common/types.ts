@@ -50,3 +50,45 @@ function arrayOfAll<T extends keyof any>() {
 		) => array
 	);
 }
+
+/// sketching
+
+export
+interface Counter {
+	id: string;
+	label: string;
+	value: number;
+}
+
+export
+interface Container {
+	id: string;
+	label: string;
+	items: Item[];
+	itemType: string;
+	owner?: string;
+	hidden?: boolean;
+	informedPlayers?: string[];
+	orderedItems: string[];
+}
+
+export
+interface Item {
+	id: string;
+	type: string;
+	label: string;
+	statusNote: string;
+	description: string;
+	childItems?: Item[];
+	counters?: Counter[];
+}
+
+export
+interface Action {
+	player: string;
+	description: string;
+	movement?: {
+		itemId: string;
+		type: 'container' | 'position';
+	};
+}

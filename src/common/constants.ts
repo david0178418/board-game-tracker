@@ -101,6 +101,7 @@ const BaseReq: RequestInit = {
 export
 enum DbCollections {
 	AppMetadata = 'app-metadata',
+	Games = 'games',
 	Grams = 'grams',
 	Notifications = 'notifications',
 	Users = 'users',

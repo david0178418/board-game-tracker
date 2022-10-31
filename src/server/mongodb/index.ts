@@ -12,6 +12,7 @@ import {
 	DbTextGram,
 	DbSettings,
 	DbNotification,
+	DbGame,
 } from '@server/db-schema';
 
 const MongoDbName = process.env.DB_NAME || 'awesome-default-db';
@@ -47,6 +48,7 @@ if (process.env.NODE_ENV === 'development') {
 /* eslint-disable @typescript-eslint/indent */
 type CollectionType<T> =
 	T extends DbCollections.Grams ? DbTextGram :
+	T extends DbCollections.Games ? DbGame :
 	T extends DbCollections.Users ? DbUser :
 	T extends DbCollections.UsersMeta ? DbUserMeta :
 	T extends DbCollections.AppMetadata ? DbSettings :
