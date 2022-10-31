@@ -10,6 +10,7 @@ import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { Session } from 'next-auth';
+import dynamic from 'next/dynamic';
 
 interface Props {
 	session: Session | null;
@@ -26,6 +27,8 @@ const theme = createTheme({
 		},
 	},
 });
+
+const CommonModals = dynamic(() => import('@common/common-stuff'), { ssr: false });
 
 function App(props: AppProps<Props>) {
 	const {
@@ -56,6 +59,7 @@ function App(props: AppProps<Props>) {
 					<div>
 						<Component {...pageProps} />
 					</div>
+					<CommonModals />
 				</SessionProvider>
 			</ThemeProvider>
 		</>);

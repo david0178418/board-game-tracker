@@ -1,5 +1,23 @@
+import type { DbNotification } from '@server/db-schema';
 import type { ReactNode } from 'react';
 import { UserRoles } from './constants';
+
+export
+interface ApiResponse<T = any> {
+	ok: boolean;
+	data?: T;
+	errors?: string[];
+}
+
+export
+type Notification = Pick<DbNotification, 'message' | 'date'> & {
+	_id: string;
+}
+
+export
+interface Settings {
+	foo: 'bar';
+}
 
 export
 interface ToastMesssage {
@@ -8,13 +26,9 @@ interface ToastMesssage {
 	onClose?(): void;
 }
 
-export
-interface Settings {
-	foo: 'bar';
-}
-
 interface User {
 	id: string;
+	email: string;
 	username: string;
 	role: UserRoles;
 }

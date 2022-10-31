@@ -2,10 +2,10 @@ export
 const ApiUrl = '/api/v0';
 
 export
-const AppName = 'NotSo.Social (beta)';
+const AppName = 'Game Tools';
 
 export
-const BaseUrl = 'https://notso.social';
+const BaseUrl = process.env.HOST;
 
 export
 const CookieName = AppName;

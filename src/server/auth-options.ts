@@ -38,9 +38,9 @@ const authOptions: NextAuthOptions = {
 			// You can pass any HTML attribute to the <input> tag through the object.
 			credentials: {
 				username: {
-					label: 'Username or Email',
+					label: 'Username',
 					type: 'text',
-					placeholder: 'pinner',
+					placeholder: 'player',
 				},
 				password: {
 					label: 'Password',
