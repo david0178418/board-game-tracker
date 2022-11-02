@@ -12,8 +12,6 @@ import {
 	FaqActiveIcon,
 	FaqIcon,
 	HomeIcon,
-	GameActiveIcon,
-	GameIcon,
 } from '@components/icons';
 import {
 	List,
@@ -125,27 +123,6 @@ function LeftRail() {
 										secondary="or register"
 									>
 										<LoginIcon/>
-									</RailButtonContent>
-								</ListItemButton>
-							</Link>
-						</ListItem>
-					</>
-				)}
-				{!!user && (
-					<>
-						<ListItem disablePadding>
-							<Link
-								shallow
-								passHref
-								href={Paths.MyGames}
-							>
-								<ListItemButton>
-									<RailButtonContent label="My Games">
-										{
-											Paths.MyGames === pathname ?
-												<GameActiveIcon /> :
-												<GameIcon />
-										}
 									</RailButtonContent>
 								</ListItemButton>
 							</Link>
