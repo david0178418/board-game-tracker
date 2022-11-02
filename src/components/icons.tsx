@@ -11,6 +11,8 @@ export { default as CreateIcon } from '@mui/icons-material/Create';
 export { default as EditIcon } from '@mui/icons-material/Edit';
 export { default as FaqActiveIcon } from '@mui/icons-material/Help';
 export { default as FaqIcon } from '@mui/icons-material/HelpOutline';
+export { default as GameActiveIcon } from '@mui/icons-material/Casino';
+export { default as GameIcon } from '@mui/icons-material/CasinoOutlined';
 export { default as HomeActiveIcon } from '@mui/icons-material/Home';
 export { default as HomeIcon } from '@mui/icons-material/HomeOutlined';
 export { default as InfoIcon } from '@mui/icons-material/Info';

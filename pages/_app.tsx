@@ -11,6 +11,7 @@ import { SessionProvider } from 'next-auth/react';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { Session } from 'next-auth';
 import dynamic from 'next/dynamic';
+import { Layout } from '@components/layout';
 
 interface Props {
 	session: Session | null;
@@ -56,9 +57,9 @@ function App(props: AppProps<Props>) {
 			</Head>
 			<ThemeProvider theme={theme}>
 				<SessionProvider session={session}>
-					<div>
+					<Layout>
 						<Component {...pageProps} />
-					</div>
+					</Layout>
 					<CommonModals />
 				</SessionProvider>
 			</ThemeProvider>
