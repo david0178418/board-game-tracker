@@ -49,6 +49,7 @@ if (process.env.NODE_ENV === 'development') {
 type CollectionType<T> =
 	T extends DbCollections.Grams ? DbTextGram :
 	T extends DbCollections.Games ? DbGame :
+	T extends DbCollections.Library ? DbGame :
 	T extends DbCollections.Users ? DbUser :
 	T extends DbCollections.UsersMeta ? DbUserMeta :
 	T extends DbCollections.AppMetadata ? DbSettings :

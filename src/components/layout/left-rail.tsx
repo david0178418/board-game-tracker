@@ -10,6 +10,7 @@ import {
 	HomeActiveIcon,
 	LoginIcon,
 	HomeIcon,
+	GameIcon,
 } from '@components/icons';
 import {
 	List,
@@ -81,6 +82,25 @@ function LeftRail() {
 						</ListItemButton>
 					</Link>
 				</ListItem>
+				{user && (
+					<>
+						<ListItem disablePadding>
+							<Link
+								shallow
+								passHref
+								href={Paths.Library}
+							>
+								<ListItemButton>
+									<RailButtonContent
+										label="Game Library"
+									>
+										<GameIcon />
+									</RailButtonContent>
+								</ListItemButton>
+							</Link>
+						</ListItem>
+					</>
+				)}
 				{!user && (
 					<>
 						<ListItem disablePadding>

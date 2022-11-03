@@ -87,6 +87,7 @@ export
 enum DbCollections {
 	AppMetadata = 'app-metadata',
 	Games = 'games',
+	Library = 'library',
 	Grams = 'grams',
 	Notifications = 'notifications',
 	Users = 'users',
@@ -113,6 +114,7 @@ enum Paths {
 	Faq = '/faq',
 	Game = '/g',
 	Home = '/',
+	Library = '/l',
 	Settings = '/settings',
 }
 

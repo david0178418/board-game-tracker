@@ -3,8 +3,13 @@ import { useRefreshPage } from '@common/hooks';
 import { Button, TextField } from '@mui/material';
 import { useState } from 'react';
 
+interface Props {
+	library?: boolean;
+}
+
 export
-function CreateGameForm() {
+function CreateGameForm(props: Props) {
+	const { library = false } = props;
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +21,7 @@ function CreateGameForm() {
 		setIsLoading(true);
 
 		try {
-			await createGame(title.trim(), description.trim());
+			await createGame(title.trim(), description.trim(), library);
 			clear();
 			await reload();
 		} catch(e) {

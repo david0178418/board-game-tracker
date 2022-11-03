@@ -54,10 +54,11 @@ async function dismissNotification(id: string): Promise<void> {
 }
 
 export
-function createGame(title: string, description: string) {
+function createGame(title: string, description: string, library = false) {
 	return apiPost('/game/create', {
 		title,
 		description,
+		library,
 	});
 }
 

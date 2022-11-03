@@ -27,7 +27,7 @@ interface Props {
 export
 const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
 	const session = await getServerSession(ctx.req, ctx.res);
-	const col = await getCollection(DbCollections.Games);
+	const col = await getCollection(DbCollections.Library);
 	const userId = session?.user.id;
 
 	const games = userId ?
@@ -49,7 +49,7 @@ export default function Home(props: Props) {
 	return (
 		<Container>
 			<Head>
-				<title>Board Game Tools</title>
+				<title>Board Game Tools - Library</title>
 				<meta name="description" content="Board game tools" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
@@ -58,7 +58,7 @@ export default function Home(props: Props) {
 			)}
 			{isLoggedIn && (
 				<>
-					<CreateGameForm />
+					<CreateGameForm library />
 				</>
 			)}
 			<List>
@@ -67,7 +67,7 @@ export default function Home(props: Props) {
 						<Link
 							shallow
 							passHref
-							href={urlJoin(Paths.Game, g._id)}
+							href={urlJoin(Paths.Library, g._id)}
 						>
 							<ListItemButton>
 								<ListItemText

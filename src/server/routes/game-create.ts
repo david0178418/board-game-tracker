@@ -22,6 +22,9 @@ const schema = z.object({
 		.string()
 		.min(GameDescriptionMinLength)
 		.max(GameDescriptionMaxLength),
+	library: z
+		.boolean()
+		.optional(),
 });
 
 export
@@ -49,16 +52,18 @@ async function gameCreate(req: NextApiRequest, res: NextApiResponse<any>) {
 	const {
 		title,
 		description,
+		library = false,
 	} = result.data;
 
 	res.send({
 		ok: true,
-		data: { id: await createGame(user.id, title, description) },
+		data: { id: await createGame(user.id, title, description, library) },
 	});
 }
 
-async function createGame(ownerId: string, title: string, description: string) {
-	const col = await getCollection(DbCollections.Games);
+async function createGame(ownerId: string, title: string, description: string, library: boolean) {
+	const colType = library ? DbCollections.Library : DbCollections.Games;
+	const col = await getCollection(colType);
 	const _id = new ObjectId();
 
 	await col.insertOne({
