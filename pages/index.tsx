@@ -2,9 +2,6 @@ import type { Game } from '@common/types';
 
 import Head from 'next/head';
 import { LoginBtn } from '@components/login-btn';
-import {
-	Container, List, ListItem, ListItemText,
-} from '@mui/material';
 import { useIsLoggedIn } from '@common/hooks';
 import { GetServerSideProps } from 'next';
 import { getCollection } from '@server/mongodb';
@@ -13,6 +10,12 @@ import { getServerSession } from '@server/auth-options';
 import { ObjectId } from 'mongodb';
 import { dbGameToGame } from '@server/transforms';
 import { CreateGameForm } from '@components/create-game.form';
+import {
+	Container,
+	List,
+	ListItem,
+	ListItemText,
+} from '@mui/material';
 
 interface Props {
 	games: Game[];
@@ -28,7 +31,12 @@ const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
 		await col.find({ ownerId: new ObjectId(userId) }).toArray() :
 		[];
 
-	return { props: { games: games.map(dbGameToGame) }	};
+	return {
+		props: {
+			session,
+			games: games.map(dbGameToGame),
+		},
+	};
 };
 
 export default function Home(props: Props) {

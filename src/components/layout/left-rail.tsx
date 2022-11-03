@@ -9,8 +9,6 @@ import {
 import {
 	HomeActiveIcon,
 	LoginIcon,
-	FaqActiveIcon,
-	FaqIcon,
 	HomeIcon,
 } from '@components/icons';
 import {
@@ -85,26 +83,6 @@ function LeftRail() {
 				</ListItem>
 				{!user && (
 					<>
-
-						<ListItem disablePadding>
-							<Link
-								shallow
-								passHref
-								href={Paths.Faq}
-							>
-								<ListItemButton>
-									<RailButtonContent
-										label="Uhh...Wut?"
-									>
-										{
-											Paths.Faq === pathname ?
-												<FaqActiveIcon /> :
-												<FaqIcon />
-										}
-									</RailButtonContent>
-								</ListItemButton>
-							</Link>
-						</ListItem>
 						<ListItem disablePadding>
 							<Link
 								shallow
