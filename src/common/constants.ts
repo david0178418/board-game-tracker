@@ -29,31 +29,16 @@ export
 const IsSsr = typeof window === 'undefined';
 
 export
-const MaxPostAttachmentAnnotationLength = 200;
+const GameTitleMaxLength = 150;
 
 export
-const MaxPostBodyLength = 1000;
+const GameTitleMinLength = 4;
 
 export
-const MaxPostCost = 1_00_000;
+const GameDescriptionMaxLength = 500;
 
 export
-const MaxPostTitleLength = 100;
-
-export
-const MaxSearchTermSize = 100;
-
-export
-const MinPostBodyLength = 10;
-
-export
-const MinPostCost = 10;
-
-export
-const MinPostPoints = 10;
-
-export
-const MinPostTitleLength = 3;
+const GameDescriptionMinLength = 0;
 
 export
 const MongoIdLength = 24;

@@ -53,6 +53,14 @@ async function dismissNotification(id: string): Promise<void> {
 	await apiGet('/user/notifications/dismiss', { id });
 }
 
+export
+function createGame(title: string, description: string) {
+	return apiPost('/game/create', {
+		title,
+		description,
+	});
+}
+
 function apiPost<T = any>(path: string, requestBody?: any) {
 	return post<T>(urlJoin(ApiUrl, path), requestBody);
 }

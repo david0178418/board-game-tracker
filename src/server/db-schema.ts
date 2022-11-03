@@ -46,7 +46,10 @@ interface DbUserMeta {
 
 export
 interface DbGame {
-	id: string;
+	_id: ObjectId;
+	ownerId: ObjectId;
+	title: string;
+	description: string;
 	containers: Container[];
 	counters: Counter[];
 	actionHistory: Action[];

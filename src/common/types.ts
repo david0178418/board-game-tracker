@@ -1,4 +1,4 @@
-import type { DbNotification } from '@server/db-schema';
+import type { DbGame, DbNotification } from '@server/db-schema';
 import type { ReactNode } from 'react';
 import { UserRoles } from './constants';
 
@@ -66,6 +66,12 @@ function arrayOfAll<T extends keyof any>() {
 }
 
 /// sketching
+
+export
+type Game = Omit<DbGame, '_id' | 'ownerId'> & {
+	_id: string;
+	ownerId: string;
+}
 
 export
 interface Counter {
