@@ -5,7 +5,7 @@ import { LoginBtn } from '@components/login-btn';
 import { useIsLoggedIn } from '@common/hooks';
 import { GetServerSideProps } from 'next';
 import { getCollection } from '@server/mongodb';
-import { DbCollections } from '@common/constants';
+import { DbCollections, Paths } from '@common/constants';
 import { getServerSession } from '@server/auth-options';
 import { ObjectId } from 'mongodb';
 import { dbGameToGame } from '@server/transforms';
@@ -14,8 +14,11 @@ import {
 	Container,
 	List,
 	ListItem,
+	ListItemButton,
 	ListItemText,
 } from '@mui/material';
+import Link from 'next/link';
+import { urlJoin } from '@common/utils';
 
 interface Props {
 	games: Game[];
@@ -61,10 +64,18 @@ export default function Home(props: Props) {
 			<List>
 				{games.map(g => (
 					<ListItem key={g._id}>
-						<ListItemText
-							primary={`Title: ${g.title}`}
-							secondary={`Description: ${g.description}`}
-						/>
+						<Link
+							shallow
+							passHref
+							href={urlJoin(Paths.Game, g._id)}
+						>
+							<ListItemButton>
+								<ListItemText
+									primary={`Title: ${g.title}`}
+									secondary={`Description: ${g.description}`}
+								/>
+							</ListItemButton>
+						</Link>
 					</ListItem>
 				))}
 			</List>

@@ -111,6 +111,7 @@ const NotLoggedInErrMsg = {
 export
 enum Paths {
 	Faq = '/faq',
+	Game = '/g',
 	Home = '/',
 	Settings = '/settings',
 }
