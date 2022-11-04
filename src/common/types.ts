@@ -81,26 +81,30 @@ interface Counter {
 }
 
 export
-interface Container {
-	id: string;
-	label: string;
-	items: Item[];
-	itemType: string;
-	owner?: string;
-	hidden?: boolean;
-	informedPlayers?: string[];
-	orderedItems: string[];
-}
-
-export
 interface Item {
 	id: string;
 	type: string;
 	label: string;
 	statusNote: string;
 	description: string;
-	childItems?: Item[];
-	counters?: Counter[];
+	parentItems: string[];
+	childItems: string[];
+	counters: Counter[];
+}
+
+export
+interface ItemContainer {
+	id: string;
+	label: string;
+	description: string;
+	items: Item[];
+	owner?: string;
+	hidden?: boolean;
+	informedPlayers: string[];
+	orderedItems: string[];
+
+	// Not needed?
+	itemType: string;
 }
 
 export

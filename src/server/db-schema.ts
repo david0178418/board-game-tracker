@@ -5,7 +5,7 @@ import {
 } from '@common/constants';
 import {
 	Action,
-	Container,
+	ItemContainer,
 	Counter,
 } from '@common/types';
 
@@ -50,7 +50,7 @@ interface DbGame {
 	ownerId: ObjectId;
 	title: string;
 	description: string;
-	containers: Container[];
+	containers: ItemContainer[];
 	counters: Counter[];
 	actionHistory: Action[];
 }

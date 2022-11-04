@@ -1,3 +1,4 @@
+export { default as AddIcon } from '@mui/icons-material/AddCircle';
 export { default as ArrowLeftIcon } from '@mui/icons-material/ChevronLeft';
 export { default as ArrowRightIcon } from '@mui/icons-material/ChevronRight';
 export { default as AttachmentIcon } from '@mui/icons-material/AttachFile';
