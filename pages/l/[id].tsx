@@ -1,4 +1,6 @@
-import type { Game, ItemContainer } from '@common/types';
+import type {
+	Game, Item, ItemContainer,
+} from '@common/types';
 
 import Head from 'next/head';
 import { GetServerSideProps } from 'next';
@@ -8,7 +10,7 @@ import { DbCollections } from '@common/constants';
 import { ObjectId } from 'mongodb';
 import { dbGameToGame } from '@server/transforms';
 import { AddIcon } from '@components/icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { uuid } from '@common/utils';
 import {
 	Box,
@@ -20,12 +22,18 @@ import {
 	DialogContent,
 	DialogContentText,
 	DialogTitle,
+	FormControl,
 	FormControlLabel,
+	InputLabel,
 	List,
 	ListItem,
 	ListItemText,
 	ListSubheader,
+	Menu,
+	MenuItem,
+	Select,
 	TextField,
+	Typography,
 } from '@mui/material';
 
 interface Props {
@@ -62,6 +70,8 @@ const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
 export default function Home(props: Props) {
 	const { game: rawGame } = props;
 	const [game, setGame] = useState(rawGame);
+	const [containerModalOpen, setContainerModalOpen] = useState(false);
+	const [itemModalOpen, setItemModalOpen] = useState(false);
 
 	function addContainer(newContainer: ItemContainer) {
 		if(!game) {
@@ -77,6 +87,34 @@ export default function Home(props: Props) {
 		});
 	}
 
+	function addItem(newItem: Item, containerId: string) {
+		if(!game) {
+			return;
+		}
+
+		setGame({
+			...game,
+			containers: game.containers.map(c => {
+				if(c.id === containerId) {
+					c.items = [
+						newItem,
+						...c.items,
+					];
+				}
+
+				return c;
+			}),
+		});
+	}
+
+	function handleSelect(type: any) {
+		if(type === 'container') {
+			setContainerModalOpen(true);
+		} if(type === 'item') {
+			setItemModalOpen(true);
+		}
+	}
+
 	return (
 		<Container>
 			<Head>
@@ -85,8 +123,14 @@ export default function Home(props: Props) {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			{game && (
-
 				<>
+					<Typography>
+						{game.title}
+					</Typography>
+					<Bar
+						onSelect={handleSelect}
+						hasContainers={!!game?.containers.length}
+					/>
 					<List subheader={
 						<ListSubheader>
 							Containers
@@ -101,27 +145,42 @@ export default function Home(props: Props) {
 							</ListItem>
 						))}
 					</List>
+					<NewContainerModal
+						open={containerModalOpen}
+						onSave={addContainer}
+						onClose={() => setContainerModalOpen(false)}
+					/>
+					<NewItemModal
+						open={itemModalOpen}
+						containers={game.containers}
+						onSave={addItem}
+						onClose={() => setItemModalOpen(false)}
+					/>
 				</>
 			)}
-			<Foo onSave={addContainer} />
 			<Debug game={game} />
 		</Container>
 	);
 }
 
-interface FooProps {
+interface NewContainerModalProps {
+	open: boolean;
 	onSave(container: ItemContainer): void;
+	onClose(): void;
 }
 
-function Foo(props: FooProps) {
-	const { onSave } = props;
-	const [open, setOpen] = useState(false);
+function NewContainerModal(props: NewContainerModalProps) {
+	const {
+		onSave,
+		onClose,
+		open,
+	} = props;
 	const [hidden, setHidden] = useState(false);
 	const [label, setLabel] = useState('');
 	const [description, setDescription] = useState('');
 
 	function handleClose() {
-		setOpen(false);
+		onClose();
 	}
 
 	function handleSave() {
@@ -141,9 +200,6 @@ function Foo(props: FooProps) {
 
 	return (
 		<>
-			<Button startIcon={<AddIcon/>} onClick={() => setOpen(true)}>
-				Add Container
-			</Button>
 			<Dialog open={open} onClose={handleClose}>
 				<DialogTitle>New Container</DialogTitle>
 				<DialogContent>
@@ -152,7 +208,7 @@ function Foo(props: FooProps) {
 					</DialogContentText>
 					<TextField
 						fullWidth
-						label="Container Name"
+						label="Name"
 						margin="dense"
 						onChange={e => setLabel(e.target.value)}
 					/>
@@ -169,7 +225,111 @@ function Foo(props: FooProps) {
 						control={
 							<Checkbox
 								onChange={(e, newVal) => setHidden(newVal)}
-								value={hidden} />
+								value={hidden}
+							/>
+						}
+					/>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleClose}>
+						Cancel
+					</Button>
+					<Button onClick={handleSave}>
+						Save
+					</Button>
+				</DialogActions>
+			</Dialog>
+		</>
+	);
+}
+
+interface NewItemModalProps {
+	open: boolean;
+	containers: ItemContainer[];
+	onSave(item: Item, containerId: string): void;
+	onClose(): void;
+}
+
+function NewItemModal(props: NewItemModalProps) {
+	const {
+		onSave,
+		onClose,
+		containers,
+		open,
+	} = props;
+	const [hidden, setHidden] = useState(false);
+	const [label, setLabel] = useState('');
+	const [description, setDescription] = useState('');
+	const [selectedContainerId, setSelectedContainerId] = useState(containers[0]?.id);
+
+	useEffect(() => {
+		setSelectedContainerId(containers[0]?.id);
+	}, [containers[0]?.id]);
+
+	function handleClose() {
+		onClose();
+	}
+
+	function handleSave() {
+		onSave({
+			id: uuid(),
+			type: '',
+			statusNote: '',
+			label,
+			description,
+			parentItems: [],
+			childItems: [],
+			counters: [],
+		}, selectedContainerId);
+		handleClose();
+	}
+
+	return (
+		<>
+			<Dialog open={open} onClose={handleClose}>
+				<DialogTitle>New Item</DialogTitle>
+				<DialogContent>
+					<DialogContentText>
+						A Game Item.
+					</DialogContentText>
+					<FormControl fullWidth margin="dense">
+						<InputLabel>Container</InputLabel>
+						<Select
+							label="Parent Container"
+							value={selectedContainerId}
+							onChange={e => setSelectedContainerId(e.target.value)}
+						>
+							{containers.map(c => (
+								<MenuItem
+									key={c.id}
+									value={c.id}
+								>
+									{c.label}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+					<TextField
+						fullWidth
+						label="Name"
+						margin="dense"
+						onChange={e => setLabel(e.target.value)}
+					/>
+					<TextField
+						multiline
+						fullWidth
+						minRows={3}
+						label="Description"
+						margin="dense"
+						onChange={e => setDescription(e.target.value)}
+					/>
+					<FormControlLabel
+						label="Hidden"
+						control={
+							<Checkbox
+								onChange={(e, newVal) => setHidden(newVal)}
+								value={hidden}
+							/>
 						}
 					/>
 				</DialogContent>
@@ -188,7 +348,7 @@ interface DebugProps {
 
 function Debug(props: DebugProps) {
 	const { game } = props;
-	const[hidden, setHidden] = useState(false);
+	const[hidden, setHidden] = useState(true);
 
 	return (
 		<Box>
@@ -201,5 +361,52 @@ function Debug(props: DebugProps) {
 				</pre>
 			)}
 		</Box>
+	);
+}
+
+interface BarProps {
+	hasContainers?: boolean;
+	onSelect(type: any): void;
+}
+
+function Bar(props: BarProps) {
+	const {
+		onSelect,
+		hasContainers,
+	} = props;
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const open = !!anchorEl;
+
+	function handleClose(type?: any) {
+		type && onSelect(type);
+		setAnchorEl(null);
+	}
+
+	return (
+		<div>
+			<Button
+				startIcon={<AddIcon/>}
+				onClick={e => setAnchorEl(e.currentTarget)}
+			>
+				Add
+			</Button>
+			<Menu
+				anchorEl={anchorEl}
+				open={open}
+				onClose={() => handleClose()}
+			>
+				<MenuItem
+					onClick={() => handleClose('container')}
+				>
+					Add Container
+				</MenuItem>
+				<MenuItem
+					disabled={!hasContainers}
+					onClick={() => handleClose('item')}
+				>
+					Add Item
+				</MenuItem>
+			</Menu>
+		</div>
 	);
 }
