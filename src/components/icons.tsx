@@ -9,6 +9,7 @@ export { default as CloseIcon } from '@mui/icons-material/Close';
 export { default as CommentIcon } from '@mui/icons-material/ModeCommentOutlined';
 export { default as ConfirmIcon } from '@mui/icons-material/Check';
 export { default as CreateIcon } from '@mui/icons-material/Create';
+export { default as DeleteIcon } from '@mui/icons-material/Delete';
 export { default as EditIcon } from '@mui/icons-material/Edit';
 export { default as FaqActiveIcon } from '@mui/icons-material/Help';
 export { default as FaqIcon } from '@mui/icons-material/HelpOutline';
