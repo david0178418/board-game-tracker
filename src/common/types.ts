@@ -87,6 +87,7 @@ interface Item {
 	label: string;
 	statusNote: string;
 	description: string;
+	hidden?: boolean;
 	parentItems: string[];
 	childItems: string[];
 	counters: Counter[];

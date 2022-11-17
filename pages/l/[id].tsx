@@ -13,10 +13,11 @@ import { ObjectId } from 'mongodb';
 import { dbGameToGame } from '@server/transforms';
 import { useState } from 'react';
 import { DropdownMenu } from '@components/dropdown-menu';
-import { createItemContainer } from '@common/factories';
+import { createItem, createItemContainer } from '@common/factories';
 import { EditContainerModal } from '@components/modals/edit-container.modal';
 import { EditItemModal } from '@components/modals/edit-item.modal';
 import { Debug } from '@components/debug';
+import SubDirIcon from '@mui/icons-material/SubdirectoryArrowRight';
 import {
 	AddIcon,
 	DeleteIcon,
@@ -72,6 +73,7 @@ export default function Home(props: Props) {
 	const [game, setGame] = useState(rawGame);
 	const [activeContainer, setActiveContainer] = useState<ItemContainer | null>(null);
 	const [activeItem, setActiveItem] = useState<Item | null>(null);
+	const [itemContainer, setItemContainer] = useState('');
 
 	function addContainer(newContainer: ItemContainer) {
 		if(!game) {
@@ -107,6 +109,11 @@ export default function Home(props: Props) {
 		});
 	}
 
+	function openItemEdit(parentContainer: string) {
+		setItemContainer(parentContainer);
+		setActiveItem(createItem());
+	}
+
 	function handleSelect(type: any) {
 		if(type === 'container') {
 			setActiveContainer(createItemContainer());
@@ -135,37 +142,54 @@ export default function Home(props: Props) {
 						</ListSubheader>
 					}>
 						{game.containers.map(c => (
-							<ListItem
-								key={c.id}
-								secondaryAction={
-									<DropdownMenu>
-										<MenuItem>
-											<ListItemIcon>
-												<AddIcon/>
-											</ListItemIcon>
-											Add Item
-										</MenuItem>
-										<MenuItem onClick={() => setActiveContainer(c)}>
-											<ListItemIcon>
-												<EditIcon/>
-											</ListItemIcon>
-											Edit
-										</MenuItem>
-										<Divider/>
-										<MenuItem>
-											<ListItemIcon>
-												<DeleteIcon/>
-											</ListItemIcon>
-											Delete
-										</MenuItem>
-									</DropdownMenu>
-								}
-							>
-								<ListItemText
-									primary={c.label}
-									secondary={c.description}
-								/>
-							</ListItem>
+							<>
+								<ListItem
+									key={c.id}
+									secondaryAction={
+										<DropdownMenu>
+											<MenuItem onClick={() => openItemEdit(c.id)}>
+												<ListItemIcon>
+													<AddIcon/>
+												</ListItemIcon>
+												Add Item
+											</MenuItem>
+											<MenuItem onClick={() => setActiveContainer(c)}>
+												<ListItemIcon>
+													<EditIcon/>
+												</ListItemIcon>
+												Edit
+											</MenuItem>
+											<Divider/>
+											<MenuItem>
+												<ListItemIcon>
+													<DeleteIcon/>
+												</ListItemIcon>
+												Delete
+											</MenuItem>
+										</DropdownMenu>
+									}
+								>
+									<ListItemText
+										primary={c.label}
+										secondary={c.description}
+									/>
+								</ListItem>
+								{!!c.items.length && (
+									<List disablePadding>
+										{c.items.map(i => (
+											<ListItem key={i.id}>
+												<ListItemIcon>
+													<SubDirIcon />
+												</ListItemIcon>
+												<ListItemText
+													primary={i.label}
+													secondary={i.description}
+												/>
+											</ListItem>
+										))}
+									</List>
+								)}
+							</>
 						))}
 					</List>
 					<EditContainerModal
@@ -174,6 +198,7 @@ export default function Home(props: Props) {
 						onClose={() => setActiveContainer(null)}
 					/>
 					<EditItemModal
+						container={itemContainer}
 						selectedItem={activeItem}
 						containers={game.containers}
 						onSave={saveItem}

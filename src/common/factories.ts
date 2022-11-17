@@ -1,4 +1,4 @@
-import type { ItemContainer } from './types';
+import type { Item, ItemContainer } from './types';
 import { uuid } from './utils';
 
 export
@@ -12,6 +12,21 @@ function createItemContainer(): ItemContainer {
 		hidden: false,
 		orderedItems: [],
 		itemType: '',
+	};
+}
+
+export
+function createItem(): Item {
+	return {
+		id: uuid(),
+		label: '',
+		description: '',
+		hidden: false,
+		type: '',
+		statusNote: '',
+		parentItems: [],
+		childItems: [],
+		counters: [],
 	};
 }
 

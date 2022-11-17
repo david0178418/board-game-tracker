@@ -23,6 +23,7 @@ import {
 
 interface Props {
 	selectedItem: Item | null;
+	container: string;
 	containers: ItemContainer[];
 	onSave(item: Item, containerId: string): void;
 	onClose(): void;
@@ -33,17 +34,18 @@ function EditItemModal(props: Props) {
 	const {
 		onSave,
 		onClose,
+		container,
 		containers,
 		selectedItem,
 	} = props;
 	const [hidden, setHidden] = useState(false);
 	const [label, setLabel] = useState('');
 	const [description, setDescription] = useState('');
-	const [selectedContainerId, setSelectedContainerId] = useState(containers[0]?.id);
+	const [selectedContainerId, setSelectedContainerId] = useState(container || containers[0]?.id);
 
 	useEffect(() => {
-		setSelectedContainerId(containers[0]?.id);
-	}, [containers[0]?.id]);
+		setSelectedContainerId(container || containers[0]?.id);
+	}, [container, containers[0]?.id]);
 
 	function handleClose() {
 		onClose();
