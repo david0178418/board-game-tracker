@@ -11,7 +11,7 @@ import { getCollection } from '@server/mongodb';
 import { DbCollections } from '@common/constants';
 import { ObjectId } from 'mongodb';
 import { dbGameToGame } from '@server/transforms';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { DropdownMenu } from '@components/dropdown-menu';
 import { createItem, createItemContainer } from '@common/factories';
 import { EditContainerModal } from '@components/modals/edit-container.modal';
@@ -36,6 +36,7 @@ import {
 	MenuItem,
 	Typography,
 } from '@mui/material';
+import { saveGame } from '@client/api-calls';
 
 interface Props {
 	game: Game | null;
@@ -120,6 +121,14 @@ export default function Home(props: Props) {
 		}
 	}
 
+	function handleSave() {
+		if(!game) {
+			return;
+		}
+
+		saveGame(game);
+	}
+
 	return (
 		<Container>
 			<Head>
@@ -132,6 +141,9 @@ export default function Home(props: Props) {
 					<Typography>
 						{game.title}
 					</Typography>
+					<Button onClick={handleSave}>
+						Save
+					</Button>
 					<Bar
 						onSelect={handleSelect}
 						hasContainers={!!game?.containers.length}
@@ -142,7 +154,7 @@ export default function Home(props: Props) {
 						</ListSubheader>
 					}>
 						{game.containers.map(c => (
-							<>
+							<Fragment key={c.id}>
 								<ListItem
 									key={c.id}
 									secondaryAction={
@@ -189,7 +201,7 @@ export default function Home(props: Props) {
 										))}
 									</List>
 								)}
-							</>
+							</Fragment>
 						))}
 					</List>
 					<EditContainerModal

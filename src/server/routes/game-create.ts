@@ -73,7 +73,6 @@ async function createGame(ownerId: string, title: string, description: string, l
 		description,
 		containers: [],
 		counters: [],
-		actionHistory: [],
 	});
 
 	return _id;

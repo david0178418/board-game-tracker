@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import { getServerSession } from '@server/auth-options';
+import { getCollection } from '@server/mongodb';
+import { ObjectId } from 'mongodb';
 import {
 	z,
 	ZodType,
@@ -11,12 +13,14 @@ import {
 	Item,
 } from '@common/types';
 import {
+	DbCollections,
 	GameDescriptionMaxLength,
 	GameDescriptionMinLength,
 	GameTitleMaxLength,
 	GameTitleMinLength,
 	NotLoggedInErrMsg,
 } from '@common/constants';
+import { gameToDbGame } from '@server/transforms';
 
 const MongoObjectId = z
 	.string()
@@ -43,7 +47,7 @@ const ItemSchema: ZodType<Item> = z.object({
 });
 
 const ContainerSchema: ZodType<ItemContainer> = z.object({
-	id: MongoObjectId,
+	id: UuidSchema,
 	label: z
 		.string()
 		.min(3)
@@ -59,9 +63,7 @@ const ContainerSchema: ZodType<ItemContainer> = z.object({
 	orderedItems: z.array(UuidSchema.or(z.string().length(0))),
 });
 
-type Foo = Omit<Game, 'actionHistory'>;
-
-const schema: ZodType<Foo> = z.object({
+const schema: ZodType<Game> = z.object({
 	_id: MongoObjectId,
 	ownerId: MongoObjectId,
 	title: z
@@ -102,25 +104,15 @@ async function gameUpdate(req: NextApiRequest, res: NextApiResponse<any>) {
 
 	res.send({
 		ok: true,
-		game,
-		// data: { id: await updateGame(game) },
+		data: { game: await updateGame(game) },
 	});
 }
 
-// async function updateGame(ownerId: string, title: string, description: string, library: boolean) {
-// 	const colType = library ? DbCollections.Library : DbCollections.Games;
-// 	const col = await getCollection(colType);
-// 	const _id = new ObjectId();
+async function updateGame(game: Game) {
+	const colType = DbCollections.Library;
+	const col = await getCollection(colType);
 
-// 	await col.insertOne({
-// 		_id,
-// 		ownerId: new ObjectId(ownerId),
-// 		title,
-// 		description,
-// 		containers: [],
-// 		counters: [],
-// 		actionHistory: [],
-// 	});
+	col.updateOne({ _id: new ObjectId(game._id) }, { $set: { ...gameToDbGame(game) } });
 
-// 	return _id;
-// }
+	return game;
+}

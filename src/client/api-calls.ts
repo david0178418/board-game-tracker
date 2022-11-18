@@ -1,5 +1,6 @@
 import type {
 	ApiResponse,
+	Game,
 	Notification,
 } from '@common/types';
 
@@ -60,6 +61,11 @@ function createGame(title: string, description: string, library = false) {
 		description,
 		library,
 	});
+}
+
+export
+function saveGame(game: Game) {
+	return apiPost(`/game/${game._id}/update`, game);
 }
 
 function apiPost<T = any>(path: string, requestBody?: any) {

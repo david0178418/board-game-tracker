@@ -4,7 +4,6 @@ import {
 	UserRoles,
 } from '@common/constants';
 import {
-	Action,
 	ItemContainer,
 	Counter,
 } from '@common/types';
@@ -52,7 +51,6 @@ interface DbGame {
 	description: string;
 	containers: ItemContainer[];
 	counters: Counter[];
-	actionHistory: Action[];
 }
 
 // const originalState: Game = {
